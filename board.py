@@ -2,6 +2,7 @@ import numpy as np
 from colorama import Fore, Back, Style
 from mandalorian import Mandalorian
 
+
 class Board:
     ''' Creates grid for the game '''
 
@@ -30,10 +31,11 @@ class Board:
         new_grid = np.full((self.__rows, self.__cols), Back.BLUE + ".")
         new_grid[self.__rows - self.__ground_size:,
                  :] = np.full((self.__ground_size, self.__cols), Back.GREEN + ".")
-        new_grid[0,:] = np.full((1,self.__cols), Back.YELLOW + ".")
+        new_grid[0, :] = np.full((1, self.__cols), Back.YELLOW + ".")
 
         self.__grid = new_grid
 
-    def render_mandalorian(self, mandalorian):
+    def render_mandalorian(self, mandalorian: Mandalorian):
         ''' Renders the playing character '''
-        
+        self.__grid[mandalorian.x:mandalorian.x + mandalorian.height,
+                    mandalorian.y:mandalorian.y + mandalorian.width] = mandalorian.shape
