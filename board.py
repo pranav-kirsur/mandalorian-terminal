@@ -7,10 +7,10 @@ class Board:
     ''' Creates grid for the game '''
 
     def __init__(self, rows, cols):
-        self.__rows = rows
-        self.__cols = cols
+        self.rows = rows
+        self.cols = cols
         self.__grid = self.__create_grid(rows, cols)
-        self.__ground_size = 3
+        self.ground_size = 3
 
     def __create_grid(self, rows, cols):
         return np.full((rows, cols), Back.BLUE + ".")
@@ -26,16 +26,36 @@ class Board:
                 print(elem, end='')
             print('\n', end='')
 
+        print(Back.RESET, end='')
+
     def render_scenery(self):
         ''' Renders the background, ceiling, and ground '''
-        new_grid = np.full((self.__rows, self.__cols), Back.BLUE + ".")
-        new_grid[self.__rows - self.__ground_size:,
-                 :] = np.full((self.__ground_size, self.__cols), Back.GREEN + ".")
-        new_grid[0, :] = np.full((1, self.__cols), Back.YELLOW + ".")
+        new_grid = np.full((self.rows, self.cols), Back.BLUE + ".")
+        new_grid[self.rows - self.ground_size:,
+                 :] = np.full((self.ground_size, self.cols), Back.GREEN + ".")
+        new_grid[0, :] = np.full((1, self.cols), Back.YELLOW + ".")
 
         self.__grid = new_grid
 
     def render_mandalorian(self, mandalorian: Mandalorian):
         ''' Renders the playing character '''
-        self.__grid[mandalorian.x:mandalorian.x + mandalorian.height,
-                    mandalorian.y:mandalorian.y + mandalorian.width] = mandalorian.shape
+        x = round(mandalorian.x)
+        y = round(mandalorian.y)
+        self.__grid[x: x + mandalorian.height,
+                    y:y + mandalorian.width] = mandalorian.shape
+
+    def reposition_cursor(self, x, y):
+        print("\033[%d;%dH" % (x, y), end='')
+
+    def do_physics(self, mandalorian: Mandalorian):
+
+        mandalorian.x += mandalorian.vx
+        mandalorian.y += mandalorian.vy
+        mandalorian.vx += mandalorian.ax
+        mandalorian.vy += mandalorian.ay
+
+        # if on ground
+        if(mandalorian.x + mandalorian.height + self.ground_size >= self.rows):
+            mandalorian.x = self.rows - self.ground_size - mandalorian.height
+            mandalorian.vx = 0
+            mandalorian.ax = 0

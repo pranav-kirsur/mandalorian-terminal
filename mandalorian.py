@@ -15,3 +15,7 @@ class Mandalorian(Person):
             ])
         self.height = 3
         self.width = 3
+        self.vx = 0
+        self.vy = 0
+        self.ax = 0.3
+        self.ay = 0
