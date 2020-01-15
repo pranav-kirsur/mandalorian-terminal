@@ -32,8 +32,8 @@ class Board:
 
     def render_object(self, game_object):
         ''' Renders the object onto the grid'''
-        x = int(game_object.x)
-        y = int(game_object.y)
+        x = round(game_object.x)
+        y = round(game_object.y)
         self.__grid = self.__create_grid(self.rows, self.cols)
         self.__grid[x: x + game_object.height,
                     y:y + game_object.width] = game_object.shape
@@ -57,8 +57,8 @@ class Board:
 
         game_object.x += game_object.vx
         game_object.y += game_object.vy
-        game_object.vx += game_object.ax + game_object.gravity
-        game_object.vy += game_object.ay
+        game_object.vx += game_object.ax + game_object.gravity - (game_object.drag * game_object.vx)
+        game_object.vy += game_object.ay - (game_object.drag * game_object.vy)
 
         if(self.is_touching_ground(game_object)):
             game_object.x = self.rows - game_object.height
