@@ -15,24 +15,20 @@ os.system('clear')
 game_board = Board(rows=ttyrows - 3, cols=ttycolumns)
 game_board.render()
 
-player = Mandalorian(3,3,0,0)
+player = Mandalorian(3, 3, 0, 0)
 kb = KBHit()
 
 while True:
+    sleep(0.1)
     if kb.kbhit():
         char = kb.getch()
         if(char == 'w'):
-            player.vx -= 1
+            player.vx -= 2
         elif(char == 'a'):
-            player.vy -= 1 
+            player.vy -= 1
         elif(char == 'd'):
-            player.vy+= 1
-    sleep(0.01)
+            player.vy += 1
     game_board.compute_physics(player)
     game_board.render_object(player)
     game_board.render()
-    #print(player.vx, player.vy)
-
-
-
-
+    # print(player.vx, end='')

@@ -41,23 +41,24 @@ class Board:
         print("\033[%d;%dH" % (x, y), end='')
 
     def is_touching_ground(self, game_object):
-        return game_object.x + game_object.height >= self.rows
+        return round(game_object.x) + game_object.height >= self.rows
 
     def is_touching_left_edge(self, game_object):
-        return game_object.y <= 0
+        return round(game_object.y) <= 0
 
     def is_touching_top(self, game_object):
-        return game_object.x <= 0
+        return round(game_object.x) <= 0
 
     def is_touching_right_edge(self, game_object):
-        return game_object.y + game_object.width >= self.cols
+        return round(game_object.y) + game_object.width >= self.cols
 
     def compute_physics(self, game_object):
 
+        game_object.vx += game_object.ax + game_object.gravity - (game_object.drag * game_object.vx * game_object.vx )
+        game_object.vy += game_object.ay - (game_object.drag * game_object.vy * game_object.vy )
         game_object.x += game_object.vx
         game_object.y += game_object.vy
-        game_object.vx += game_object.ax + game_object.gravity - (game_object.drag * game_object.vx)
-        game_object.vy += game_object.ay - (game_object.drag * game_object.vy)
+
 
         if(self.is_touching_ground(game_object)):
             game_object.x = self.rows - game_object.height
