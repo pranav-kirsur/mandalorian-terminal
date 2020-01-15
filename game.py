@@ -22,14 +22,15 @@ while True:
     if kb.kbhit():
         char = kb.getch()
         if(char == 'w'):
-            player.vx -= 1
+            player.vx -= 2
         elif(char == 'a'):
-            player.vy -=1 
+            player.vy -= 2 
         elif(char == 'd'):
-            player.vy+=1
+            player.vy+= 2
     game_board.compute_physics(player)
     game_board.render_object(player)
     game_board.render()
+    print(player.vx, player.vy)
 
 
 
