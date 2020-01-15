@@ -14,6 +14,9 @@ class Board:
     def __create_grid(self, rows, cols):
         return np.full((rows, cols), Back.BLUE + " ")
 
+    def refresh_grid(self):
+        self.__grid = self.__create_grid(self.rows, self.cols)
+
     def print_grid(self):
         ''' 
             Prints the board
@@ -33,7 +36,6 @@ class Board:
         ''' Renders the object onto the grid'''
         x = round(game_object.x)
         y = round(game_object.y)
-        self.__grid = self.__create_grid(self.rows, self.cols)
         self.__grid[x: x + game_object.height,
                     y:y + game_object.width] = game_object.shape
 
@@ -54,11 +56,12 @@ class Board:
 
     def compute_physics(self, game_object):
 
-        game_object.vx += game_object.ax + game_object.gravity - (game_object.drag * game_object.vx * game_object.vx )
-        game_object.vy += game_object.ay - (game_object.drag * game_object.vy * game_object.vy )
+        game_object.vx += game_object.ax + game_object.gravity - \
+            (game_object.drag * game_object.vx * game_object.vx)
+        game_object.vy += game_object.ay - \
+            (game_object.drag * game_object.vy * game_object.vy)
         game_object.x += game_object.vx
         game_object.y += game_object.vy
-
 
         if(self.is_touching_ground(game_object)):
             game_object.x = self.rows - game_object.height
