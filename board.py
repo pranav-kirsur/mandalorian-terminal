@@ -10,52 +10,68 @@ class Board:
         self.rows = rows
         self.cols = cols
         self.__grid = self.__create_grid(rows, cols)
-        self.ground_size = 3
 
     def __create_grid(self, rows, cols):
         return np.full((rows, cols), Back.BLUE + ".")
 
-    def print_grid(self, window_left, window_right):
-        ''' Prints part of the board in the window given by the given parameters
-            The interval is [window_left, window_right)
+    def print_grid(self):
+        ''' 
+            Prints the board
         '''
-        section_to_print = self.__grid[:, window_left: window_right]
-
-        for row in section_to_print:
+        for row in self.__grid:
             for elem in row:
                 print(elem, end='')
-            print('\n', end='')
 
+    def render(self):
+        ''' Renders the top, grid, and ground and prints it onto the screen'''
+        self.reposition_cursor(0, 0)
+        print(Back.YELLOW + ("." * self.cols))
+        self.print_grid()
+        print(Back.GREEN + ("." * self.cols))
         print(Back.RESET, end='')
 
-    def render_scenery(self):
-        ''' Renders the background, ceiling, and ground '''
-        new_grid = np.full((self.rows, self.cols), Back.BLUE + ".")
-        new_grid[self.rows - self.ground_size:,
-                 :] = np.full((self.ground_size, self.cols), Back.GREEN + ".")
-        new_grid[0, :] = np.full((1, self.cols), Back.YELLOW + ".")
-
-        self.__grid = new_grid
-
-    def render_mandalorian(self, mandalorian: Mandalorian):
-        ''' Renders the playing character '''
-        x = round(mandalorian.x)
-        y = round(mandalorian.y)
-        self.__grid[x: x + mandalorian.height,
-                    y:y + mandalorian.width] = mandalorian.shape
+    def render_object(self, game_object):
+        ''' Renders the object onto the grid'''
+        x = game_object.x
+        y = game_object.y
+        self.__grid = self.__create_grid(self.rows, self.cols)
+        self.__grid[x: x + game_object.height,
+                    y:y + game_object.width] = game_object.shape
 
     def reposition_cursor(self, x, y):
         print("\033[%d;%dH" % (x, y), end='')
 
-    def do_physics(self, mandalorian: Mandalorian):
+    def is_touching_ground(self, game_object):
+        return game_object.x + game_object.height >= self.rows
 
-        mandalorian.x += mandalorian.vx
-        mandalorian.y += mandalorian.vy
-        mandalorian.vx += mandalorian.ax
-        mandalorian.vy += mandalorian.ay
+    def is_touching_left_edge(self, game_object):
+        return game_object.y <= 0
 
-        # if on ground
-        if(mandalorian.x + mandalorian.height + self.ground_size >= self.rows):
-            mandalorian.x = self.rows - self.ground_size - mandalorian.height
-            mandalorian.vx = 0
-            mandalorian.ax = 0
+    def is_touching_top(self, game_object):
+        return game_object.x <= 0
+
+    def is_touching_right_edge(self, game_object):
+        return game_object.y + game_object.width >= self.cols
+
+    def compute_physics(self, game_object):
+
+        game_object.x += game_object.vx
+        game_object.y += game_object.vy
+        game_object.vx += game_object.ax + game_object.gravity
+        game_object.vy += game_object.ay
+
+        if(self.is_touching_ground(game_object)):
+            game_object.x = self.rows - game_object.height
+            game_object.vx = min(0, game_object.vx)
+
+        if(self.is_touching_top(game_object)):
+            game_object.x = 0
+            game_object.vx = max(game_object.vx, 0)
+
+        if(self.is_touching_left_edge(game_object)):
+            game_object.y = 0
+            game_object.vy = max(0, game_object.vy)
+
+        if(self.is_touching_right_edge(game_object)):
+            game_object.y = self.cols - game_object.width
+            game_object.vy = min(0, game_object.vy)

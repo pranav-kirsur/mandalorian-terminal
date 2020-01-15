@@ -3,7 +3,7 @@ from mandalorian import Mandalorian
 import os
 from time import sleep
 from colorama import init
-from input import Get
+from kbhit import KBHit
 
 init()
 
@@ -11,25 +11,26 @@ init()
 ttyrows, ttycolumns = os.popen('stty size', 'r').read().split()
 ttyrows, ttycolumns = int(ttyrows), int(ttycolumns)
 
-game_board = Board(rows=40, cols=1000)
 os.system('clear')
-player = Mandalorian(x=3, y=3)
-game_board.render_scenery()
-game_board.render_mandalorian(player)
-game_board.print_grid(0, ttycolumns)
+game_board = Board(rows=ttyrows - 3, cols=ttycolumns)
+game_board.render()
+
+player = Mandalorian(3,3,0,0)
+kb = KBHit()
 
 while True:
-    sleep(0.1)
-    
-    game_board.render_scenery()
+    if kb.kbhit():
+        char = kb.getch()
+        if(char == 'w'):
+            player.vx -= 1
+        elif(char == 'a'):
+            player.vy -=1 
+        elif(char == 'd'):
+            player.vy+=1
+    game_board.compute_physics(player)
+    game_board.render_object(player)
+    game_board.render()
 
-    input_char = Get()
-    if(input_char == 'w'):
-        player.x -= 1
 
-    game_board.do_physics(player)
-    game_board.render_mandalorian(player)
-    game_board.reposition_cursor(0, 0)
-    game_board.print_grid(0, ttycolumns)
 
 
