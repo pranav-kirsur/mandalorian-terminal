@@ -27,10 +27,11 @@ while True:
             player.vy -= 1 
         elif(char == 'd'):
             player.vy+= 1
+    sleep(0.01)
     game_board.compute_physics(player)
     game_board.render_object(player)
     game_board.render()
-    print(player.vx, player.vy)
+    #print(player.vx, player.vy)
 
 
 

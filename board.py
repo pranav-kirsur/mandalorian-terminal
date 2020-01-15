@@ -12,22 +12,21 @@ class Board:
         self.__grid = self.__create_grid(rows, cols)
 
     def __create_grid(self, rows, cols):
-        return np.full((rows, cols), Back.BLUE + ".")
+        return np.full((rows, cols), Back.BLUE + " ")
 
     def print_grid(self):
         ''' 
             Prints the board
         '''
         for row in self.__grid:
-            for elem in row:
-                print(elem, end='')
+            print("".join(row))
 
     def render(self):
         ''' Renders the top, grid, and ground and prints it onto the screen'''
         self.reposition_cursor(0, 0)
-        print(Back.YELLOW + ("." * self.cols))
+        print(Back.YELLOW + (" " * self.cols))
         self.print_grid()
-        print(Back.GREEN + ("." * self.cols))
+        print(Back.GREEN + (" " * self.cols))
         print(Back.RESET, end='')
 
     def render_object(self, game_object):
