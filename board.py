@@ -64,21 +64,21 @@ class Board:
         game_object.y += game_object.vy
 
         if(self.is_touching_ground(game_object)):
-            game_object.x = self.rows - game_object.height
-            game_object.vx = min(0, game_object.vx)
-            game_object.ax = min(0, game_object.ax)
+            game_object.hit_ground(self.rows)
 
         if(self.is_touching_top(game_object)):
-            game_object.x = 0
-            game_object.vx = max(game_object.vx, 0)
-            game_object.ax = max(game_object.ax, 0)
+            game_object.hit_top()
 
         if(self.is_touching_left_edge(game_object)):
-            game_object.y = 0
-            game_object.vy = max(0, game_object.vy)
-            game_object.ay = max(0, game_object.ay)
+            game_object.hit_left_edge()
 
         if(self.is_touching_right_edge(game_object)):
-            game_object.y = self.cols - game_object.width
-            game_object.vy = min(0, game_object.vy)
-            game_object.ay = min(0, game_object.ay)
+            game_object.hit_right_edge(self.cols)
+
+    def compute_coin_collisions(self, mandalorian, coins_list):
+        for coin in coins_list:
+            if coin.is_active:
+                if (coin.x >= mandalorian.x) and (coin.y >= mandalorian.y) and (coin.x < mandalorian.x + mandalorian.height) and (coin.y < mandalorian.y + mandalorian.width):
+                    # collision has occurred
+                    coin.collect()
+                    mandalorian.coins_collected += 1

@@ -19,7 +19,7 @@ game_board.render()
 player = Mandalorian(3, 3, 0, 0)
 kb = KBHit()
 
-coin = Coin(15, 50, 0, -1)
+coins_list = [ Coin(15, 50, 0, -1)]
 
 while True:
     sleep(0.1)
@@ -33,10 +33,20 @@ while True:
             player.vy += 1
 
     game_board.refresh_grid()
-    game_board.compute_physics(coin)
-    game_board.render_object(coin)
+
     game_board.compute_physics(player)
+
+    for coin in coins_list:
+        if(coin.is_active):
+            game_board.compute_physics(coin)
+
+    game_board.compute_coin_collisions(player, coins_list)
+
+    for coin in coins_list:
+        if(coin.is_active):
+            game_board.render_object(coin)
+
     game_board.render_object(player)
 
     game_board.render()
-    # print(player.vx, end='')
+    print(player.coins_collected, end = "")
