@@ -7,6 +7,7 @@ from kbhit import KBHit
 from coin import Coin
 from laser import Laser
 from bullet import Bullet
+import random
 
 init()
 
@@ -27,8 +28,19 @@ lasers_list = [Laser(40, ttycolumns - 7, 0, -1, 1), Laser(50, ttycolumns - 7, 0,
                Laser(30, ttycolumns - 7, 0, -1, 3), Laser(20, ttycolumns - 7, 0, -1, 4)]
 bullets_list = []
 
+num_frames = 0
+
 while True:
+    num_frames+=1
     sleep(0.0175)
+
+    # Spawn objects
+    if(num_frames % 50 == 0):
+        #spawn some coins
+        rownum = random.randint(0, game_board.rows - 4)
+        for i in range(3):
+            coins_list.append(Coin(rownum + i, game_board.cols - 1, 0 , -1 ) )
+
     if kb.kbhit():
         char = kb.getch()
         if(char == 'w'):
