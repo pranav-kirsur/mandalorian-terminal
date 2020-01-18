@@ -31,21 +31,22 @@ bullets_list = []
 num_frames = 0
 
 while True:
-    num_frames+=1
+    num_frames += 1
     sleep(0.0175)
 
     # Spawn objects
     if(num_frames % 50 == 0):
-        #spawn some coins
+        # spawn some coins
         rownum = random.randint(0, game_board.rows - 4)
         for i in range(3):
-            coins_list.append(Coin(rownum + i, game_board.cols - 1, 0 , -1 ) )
-    
+            coins_list.append(Coin(rownum + i, game_board.cols - 1, 0, -1))
+
     if(num_frames % 50 == 25):
-        #spawn lasers
+        # spawn lasers
         rownum = random.randint(0, game_board.rows - 6)
         laser_type = random.randint(1, 4)
-        lasers_list.append(Laser(rownum , game_board.cols - 6, 0 , -1, laser_type ) )
+        lasers_list.append(
+            Laser(rownum, game_board.cols - 6, 0, -1, laser_type))
 
     if kb.kbhit():
         char = kb.getch()
@@ -56,7 +57,7 @@ while True:
         elif(char == 'd'):
             player.vy += 1
         elif(char == 'b'):
-            bullets_list.append(Bullet(player.x , player.y + 3, 0, 3))
+            bullets_list.append(Bullet(player.x, player.y + 3, 0, 3))
 
     game_board.refresh_grid()
 
@@ -103,4 +104,26 @@ while True:
     game_board.render_object(player)
 
     game_board.render()
+
+    # clear dead objects
+    new_lasers_list = []
+    new_coins_list = []
+    new_bullets_list = []
+
+    for laser in lasers_list:
+        if(laser.is_active):
+            new_lasers_list.append(laser)
+
+    for coin in coins_list:
+        if(coin.is_active):
+            new_coins_list.append(coin)
+    
+    for bullet in bullets_list:
+        if(bullet.is_active):
+            new_bullets_list.append(bullet)
+
+    coins_list = new_coins_list
+    bullets_list = new_bullets_list
+    lasers_list = new_lasers_list
+
     print(player.lives, end="")
