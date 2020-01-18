@@ -15,7 +15,7 @@ class Mandalorian(GameObject):
             ])
         self.height = 3
         self.width = 3
-        self.gravity = 0.3
+        self.gravity = 0.115
         self.drag = 0.05
         self.coins_collected = 0
         self.lives = 3

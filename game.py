@@ -28,7 +28,7 @@ lasers_list = [Laser(40, ttycolumns - 7, 0, -1, 1), Laser(50, ttycolumns - 7, 0,
 bullets_list = []
 
 while True:
-    sleep(0.1)
+    sleep(0.0175)
     if kb.kbhit():
         char = kb.getch()
         if(char == 'w'):
@@ -38,7 +38,7 @@ while True:
         elif(char == 'd'):
             player.vy += 1
         elif(char == 'b'):
-            bullets_list.append(Bullet(player.x , player.y + 3, 0, 1))
+            bullets_list.append(Bullet(player.x , player.y + 3, 0, 3))
 
     game_board.refresh_grid()
 
