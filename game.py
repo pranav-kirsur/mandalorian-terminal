@@ -38,7 +38,7 @@ while True:
         elif(char == 'd'):
             player.vy += 1
         elif(char == 'b'):
-            bullets_list.append(Bullet(player.x , player.y + 3, 0, 3))
+            bullets_list.append(Bullet(player.x , player.y + 3, 0, 1))
 
     game_board.refresh_grid()
 
@@ -57,6 +57,14 @@ while True:
             game_board.compute_physics(bullet)
 
     game_board.compute_coin_collisions(player, coins_list)
+
+    for bullet in bullets_list:
+        if bullet.is_active:
+            for laser in lasers_list:
+                if laser.is_active:
+                    if(game_board.compute_bullet_collision(bullet, laser)):
+                        laser.is_active = False
+                        bullet.is_active = False
 
     for laser in lasers_list:
         if(laser.is_active):
