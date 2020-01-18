@@ -82,3 +82,29 @@ class Board:
                     # collision has occurred
                     coin.collect()
                     mandalorian.coins_collected += 1
+
+
+    def compute_laser_collision(self, mandalorian, laser):
+        laser_squares = []
+        if(laser.type == 1):
+            for i in range(5):
+                laser_squares.append((laser.x, laser.y + i))
+        elif(laser.type == 2):
+            for i in range(5):
+                laser_squares.append((laser.x + i, laser.y ))
+        elif(laser.type == 3):
+            for i in range(5):
+                laser_squares.append((laser.x + i, laser.y + i))
+        elif(laser.type == 4):
+            for i in range(5):
+                laser_squares.append((laser.x + 4 - i, laser.y + i ))
+
+
+        has_collision_occured = False
+        
+        for sqaure in laser_squares:
+                if (sqaure[0] >= mandalorian.x) and (sqaure[1] >= mandalorian.y) and (sqaure[0] < mandalorian.x + mandalorian.height) and (sqaure[1] < mandalorian.y + mandalorian.width):
+                    has_collision_occured = True
+        
+        if has_collision_occured:
+            mandalorian.lives -= 1

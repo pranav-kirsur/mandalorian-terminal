@@ -18,6 +18,7 @@ class Mandalorian(GameObject):
         self.gravity = 0.3
         self.drag = 0.05
         self.coins_collected = 0
+        self.lives = 3
 
     def hit_ground(self, rows):
         self.x = rows - self.height
