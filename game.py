@@ -40,6 +40,12 @@ while True:
         rownum = random.randint(0, game_board.rows - 4)
         for i in range(3):
             coins_list.append(Coin(rownum + i, game_board.cols - 1, 0 , -1 ) )
+    
+    if(num_frames % 50 == 25):
+        #spawn lasers
+        rownum = random.randint(0, game_board.rows - 6)
+        laser_type = random.randint(1, 4)
+        lasers_list.append(Laser(rownum , game_board.cols - 6, 0 , -1, laser_type ) )
 
     if kb.kbhit():
         char = kb.getch()

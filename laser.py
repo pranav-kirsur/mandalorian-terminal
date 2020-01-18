@@ -35,6 +35,9 @@ class Laser(GameObject):
 
     def hit_left_edge(self):
         self.is_active = 0
+    
+    def hit_top(self):
+        return
 
-    def collect(self):
-        self.is_active = False
+    def hit_ground(self, rows):
+        return
