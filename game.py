@@ -8,6 +8,7 @@ from coin import Coin
 from laser import Laser
 from bullet import Bullet
 import random
+import time
 
 init()
 
@@ -29,10 +30,18 @@ lasers_list = [Laser(40, ttycolumns - 7, 0, -1, 1), Laser(50, ttycolumns - 7, 0,
 bullets_list = []
 
 num_frames = 0
+is_shield_available = True
+last_shield_activation_time = 0
 
 while True:
     num_frames += 1
     sleep(0.0175)
+
+    if(time.time() - last_shield_activation_time > 10):
+        player.shield_active = False
+
+    if(time.time() - last_shield_activation_time >= 70):
+        is_shield_available = True
 
     # Spawn objects
     if(num_frames % 50 == 0):
@@ -58,6 +67,11 @@ while True:
             player.vy += 1
         elif(char == 'b'):
             bullets_list.append(Bullet(player.x, player.y + 3, 0, 3))
+        elif(ord(char) == 32):
+            if(not player.shield_active and is_shield_available):
+                player.shield_active = True
+                last_shield_activation_time = time.time()
+                is_shield_available = False
 
     game_board.refresh_grid()
 
@@ -117,7 +131,7 @@ while True:
     for coin in coins_list:
         if(coin.is_active):
             new_coins_list.append(coin)
-    
+
     for bullet in bullets_list:
         if(bullet.is_active):
             new_bullets_list.append(bullet)
@@ -126,4 +140,4 @@ while True:
     bullets_list = new_bullets_list
     lasers_list = new_lasers_list
 
-    print(player.lives, end="")
+    print(player.lives,player.shield_active, end="")
