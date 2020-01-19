@@ -119,3 +119,6 @@ class Board:
                 has_collision_occured = True
 
         return has_collision_occured
+
+    def compute_speed_boost_collision(self, mandalorian, speed_boost):
+        return (speed_boost.x >= mandalorian.x) and (speed_boost.y >= mandalorian.y) and (speed_boost.x < mandalorian.x + mandalorian.height) and (speed_boost.y < mandalorian.y + mandalorian.width)

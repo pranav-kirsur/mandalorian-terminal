@@ -7,6 +7,7 @@ from kbhit import KBHit
 from coin import Coin
 from laser import Laser
 from bullet import Bullet
+from speedboost import Speedboost
 import random
 import time
 
@@ -28,10 +29,13 @@ coins_list = [Coin(15, ttycolumns - 1, 0, -1), Coin(23, ttycolumns - 1, 0, -1)]
 lasers_list = [Laser(40, ttycolumns - 7, 0, -1, 1), Laser(50, ttycolumns - 7, 0, -1, 2),
                Laser(30, ttycolumns - 7, 0, -1, 3), Laser(20, ttycolumns - 7, 0, -1, 4)]
 bullets_list = []
+speed_boost_list = [Speedboost(20, ttycolumns - 6, 0, -1)]
 
 num_frames = 0
 is_shield_available = True
 last_shield_activation_time = 0
+
+speed_multiplier = 1
 
 while True:
     num_frames += 1
@@ -48,14 +52,15 @@ while True:
         # spawn some coins
         rownum = random.randint(0, game_board.rows - 4)
         for i in range(3):
-            coins_list.append(Coin(rownum + i, game_board.cols - 1, 0, -1))
+            coins_list.append(
+                Coin(rownum + i, game_board.cols - 1, 0, -1 * speed_multiplier))
 
     if(num_frames % 50 == 25):
         # spawn lasers
         rownum = random.randint(0, game_board.rows - 6)
         laser_type = random.randint(1, 4)
         lasers_list.append(
-            Laser(rownum, game_board.cols - 6, 0, -1, laser_type))
+            Laser(rownum, game_board.cols - 6, 0, -1 * speed_multiplier, laser_type))
 
     if kb.kbhit():
         char = kb.getch()
@@ -89,7 +94,17 @@ while True:
         if(bullet.is_active):
             game_board.compute_physics(bullet)
 
+    for speed_boost in speed_boost_list:
+        if speed_boost.is_active:
+            game_board.compute_physics(speed_boost)
+
     game_board.compute_coin_collisions(player, coins_list)
+
+    for speed_boost in speed_boost_list:
+        if speed_boost.is_active:
+            if (game_board.compute_speed_boost_collision(player, speed_boost)):
+                speed_multiplier = 2
+                speed_boost.is_active = False
 
     for bullet in bullets_list:
         if bullet.is_active:
@@ -110,6 +125,10 @@ while True:
     for coin in coins_list:
         if(coin.is_active):
             game_board.render_object(coin)
+
+    for speed_boost in speed_boost_list:
+        if speed_boost.is_active:
+            game_board.render_object(speed_boost)
 
     for bullet in bullets_list:
         if(bullet.is_active):
@@ -140,4 +159,4 @@ while True:
     bullets_list = new_bullets_list
     lasers_list = new_lasers_list
 
-    print(player.lives,player.shield_active, end="")
+    print(player.lives, player.shield_active, end="")
