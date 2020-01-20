@@ -9,6 +9,7 @@ from laser import Laser
 from bullet import Bullet
 from speedboost import Speedboost
 from magnet import Magnet
+from boss import Boss
 
 import random
 import time
@@ -33,12 +34,16 @@ lasers_list = [Laser(40, ttycolumns - 7, 0, -1, 1), Laser(50, ttycolumns - 7, 0,
 bullets_list = []
 speed_boost_list = [Speedboost(20, ttycolumns - 6, 0, -1)]
 magnets_list = []
+boss_list = []
 
 num_frames = 0
 is_shield_available = True
 last_shield_activation_time = 0
 
 speed_multiplier = 1
+
+has_boss_arrived = False
+
 
 while True:
     num_frames += 1
@@ -51,23 +56,32 @@ while True:
         is_shield_available = True
 
     # Spawn objects
-    if(num_frames % 50 == 0):
+
+    if(num_frames == 500):
+        # boss arrives
+        has_boss_arrived = True
+        temp_boss = Boss(0, 0, 0, 0)
+        boss_list = [Boss(game_board.rows - temp_boss.height,
+                          game_board.cols - temp_boss.width, 0, 0)]
+
+    if(num_frames % 50 == 0 and not has_boss_arrived):
         # spawn some coins
         rownum = random.randint(0, game_board.rows - 4)
         for i in range(3):
             coins_list.append(
                 Coin(rownum + i, game_board.cols - 1, 0, -1 * speed_multiplier))
 
-    if(num_frames % 50 == 25):
+    if(num_frames % 50 == 25 and not has_boss_arrived):
         # spawn lasers
         rownum = random.randint(0, game_board.rows - 6)
         laser_type = random.randint(1, 4)
         lasers_list.append(
             Laser(rownum, game_board.cols - 6, 0, -1 * speed_multiplier, laser_type))
 
-    if(num_frames == 100):
+    if(num_frames == 100 and not has_boss_arrived):
         # spawn random magnet
-        magnets_list = [Magnet(random.randint(0, game_board.rows - 4), ttycolumns - 1, 0, -1)]
+        magnets_list = [Magnet(random.randint(
+            0, game_board.rows - 4), ttycolumns - 1, 0, -1)]
 
     if kb.kbhit():
         char = kb.getch()
@@ -87,7 +101,7 @@ while True:
 
     game_board.refresh_grid()
 
-    #magnet attracts player
+    # magnet attracts player
     for magnet in magnets_list:
         if magnet.is_active:
             magnet.attract(player)
@@ -113,6 +127,9 @@ while True:
     for magnet in magnets_list:
         if magnet.is_active:
             game_board.compute_physics(magnet)
+
+    for boss in boss_list:
+        boss.adjustposition(player.x, game_board.rows)
 
     game_board.compute_coin_collisions(player, coins_list)
 
@@ -145,10 +162,13 @@ while True:
     for speed_boost in speed_boost_list:
         if speed_boost.is_active:
             game_board.render_object(speed_boost)
-    
+
     for magnet in magnets_list:
         if magnet.is_active:
             game_board.render_object(magnet)
+
+    for boss in boss_list:
+        game_board.render_object(boss)
 
     for bullet in bullets_list:
         if(bullet.is_active):
@@ -157,6 +177,7 @@ while True:
     game_board.render_object(player)
 
     game_board.render()
+
 
     # clear dead objects
     new_lasers_list = []
