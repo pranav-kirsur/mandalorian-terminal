@@ -110,7 +110,7 @@ class Board:
             laser.is_active = False
 
     def compute_bullet_collision(self, bullet, object):
-        bullet_squares = [(bullet.x, bullet.y), (bullet.x, bullet.y + 1)]
+        bullet_squares = [(bullet.x, bullet.y + i) for i in range(bullet.width)]
 
         has_collision_occured = False
 

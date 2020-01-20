@@ -8,6 +8,8 @@ from coin import Coin
 from laser import Laser
 from bullet import Bullet
 from speedboost import Speedboost
+from magnet import Magnet
+
 import random
 import time
 
@@ -30,6 +32,7 @@ lasers_list = [Laser(40, ttycolumns - 7, 0, -1, 1), Laser(50, ttycolumns - 7, 0,
                Laser(30, ttycolumns - 7, 0, -1, 3), Laser(20, ttycolumns - 7, 0, -1, 4)]
 bullets_list = []
 speed_boost_list = [Speedboost(20, ttycolumns - 6, 0, -1)]
+magnets_list = []
 
 num_frames = 0
 is_shield_available = True
@@ -62,6 +65,10 @@ while True:
         lasers_list.append(
             Laser(rownum, game_board.cols - 6, 0, -1 * speed_multiplier, laser_type))
 
+    if(num_frames == 100):
+        # spawn random magnet
+        magnets_list = [Magnet(random.randint(0, game_board.rows - 4), ttycolumns - 1, 0, -1)]
+
     if kb.kbhit():
         char = kb.getch()
         if(char == 'w'):
@@ -71,7 +78,7 @@ while True:
         elif(char == 'd'):
             player.vy += 1
         elif(char == 'b'):
-            bullets_list.append(Bullet(player.x, player.y + 3, 0, 3))
+            bullets_list.append(Bullet(player.x, player.y + 3, 0, 2))
         elif(ord(char) == 32):
             if(not player.shield_active and is_shield_available):
                 player.shield_active = True
@@ -79,6 +86,11 @@ while True:
                 is_shield_available = False
 
     game_board.refresh_grid()
+
+    #magnet attracts player
+    for magnet in magnets_list:
+        if magnet.is_active:
+            magnet.attract(player)
 
     game_board.compute_physics(player)
 
@@ -97,6 +109,10 @@ while True:
     for speed_boost in speed_boost_list:
         if speed_boost.is_active:
             game_board.compute_physics(speed_boost)
+
+    for magnet in magnets_list:
+        if magnet.is_active:
+            game_board.compute_physics(magnet)
 
     game_board.compute_coin_collisions(player, coins_list)
 
@@ -129,6 +145,10 @@ while True:
     for speed_boost in speed_boost_list:
         if speed_boost.is_active:
             game_board.render_object(speed_boost)
+    
+    for magnet in magnets_list:
+        if magnet.is_active:
+            game_board.render_object(magnet)
 
     for bullet in bullets_list:
         if(bullet.is_active):
