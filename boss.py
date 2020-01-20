@@ -30,7 +30,7 @@ class Boss(GameObject):
         (self.height, self.width) = self.shape.shape
         self.gravity = 0
         self.drag = 0
-        self.lives = 3
+        self.lives = 10
 
     def hit_ground(self, rows):
         return

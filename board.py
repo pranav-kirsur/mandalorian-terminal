@@ -57,9 +57,9 @@ class Board:
     def compute_physics(self, game_object):
 
         game_object.vx += game_object.ax + game_object.gravity - \
-            (game_object.drag * game_object.vx * game_object.vx)
+            (game_object.drag * game_object.vx * game_object.vx * (1 if game_object.vx > 0 else -1))
         game_object.vy += game_object.ay - \
-            (game_object.drag * game_object.vy * game_object.vy)
+            (game_object.drag * game_object.vy * game_object.vy * (1 if game_object.vy > 0 else -1))
         game_object.x += game_object.vx
         game_object.y += game_object.vy
 
