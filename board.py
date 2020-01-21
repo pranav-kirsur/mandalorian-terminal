@@ -109,7 +109,7 @@ class Board:
                 mandalorian.lives -= 1
             laser.is_active = False
 
-    def compute_bullet_collision(self, bullet, object):
+    def compute_projectile_collision(self, bullet, object):
         bullet_squares = [(bullet.x, bullet.y + i) for i in range(bullet.width)]
 
         has_collision_occured = False
