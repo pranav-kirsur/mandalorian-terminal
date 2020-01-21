@@ -102,8 +102,8 @@ while True:
         elif(char == 'b'):
             bullets_list.append(Bullet(player.getx(), player.gety() + 3, 0, 2))
         elif(ord(char) == 32):
-            if(not player.shield_active and is_shield_available):
-                player.shield_active = True
+            if(not player.get_shield_state() and is_shield_available):
+                player.set_shield_state(True)
                 player.setshape(2)
                 last_shield_activation_time = time.time()
                 is_shield_available = False
