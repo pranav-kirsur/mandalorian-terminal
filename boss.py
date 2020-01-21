@@ -57,7 +57,7 @@ class Boss(GameObject):
         return np.array(arr)
 
     def adjustposition(self, x, rows):
-        self.x = x
+        self.setx(x)
         if x + self.height >= rows:
-            self.x = rows - self.height - 1
+            self.setx(rows - self.height - 1)
         return

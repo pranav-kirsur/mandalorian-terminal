@@ -26,6 +26,6 @@ class Magnet(GameObject):
         return
 
     def attract(self, player):
-        if(abs(player.x - self.x) < 50 and abs(player.y - self.y) < 50):
-            player.vx += 0.05 * (self.x - player.x)
-            player.vy += 0.05 * (self.y - player.y)
+        if(abs(player.getx() - self._x) < 50 and abs(player.gety() - self._y) < 50):
+            player.setvx(player.getvx() + 0.05 * (self._x - player.getx()))
+            player.setvy(player.getvy() + 0.05 * (self._y - player.gety()))

@@ -64,43 +64,43 @@ while True:
         # boss arrives
         has_boss_arrived = True
         temp_boss = Boss(0, 0, 0, 0)
-        boss_list = [Boss(game_board.rows - temp_boss.height,
-                          game_board.cols - temp_boss.width, 0, 0)]
+        boss_list = [Boss(game_board.getrows() - temp_boss.height,
+                          game_board.getcols() - temp_boss.width, 0, 0)]
 
     if(num_frames % 50 == 0 and not has_boss_arrived):
         # spawn some coins
-        rownum = random.randint(0, game_board.rows - 4)
+        rownum = random.randint(0, game_board.getrows() - 4)
         for i in range(3):
             coins_list.append(
-                Coin(rownum + i, game_board.cols - 1, 0, -1 * speed_multiplier))
+                Coin(rownum + i, game_board.getcols() - 1, 0, -1 * speed_multiplier))
 
     if(num_frames % 50 == 25 and not has_boss_arrived):
         # spawn lasers
-        rownum = random.randint(0, game_board.rows - 6)
+        rownum = random.randint(0, game_board.getrows() - 6)
         laser_type = random.randint(1, 4)
         lasers_list.append(
-            Laser(rownum, game_board.cols - 6, 0, -1 * speed_multiplier, laser_type))
+            Laser(rownum, game_board.getcols() - 6, 0, -1 * speed_multiplier, laser_type))
 
     if(num_frames == 100 and not has_boss_arrived):
         # spawn random magnet
         magnets_list = [Magnet(random.randint(
-            0, game_board.rows - 4), ttycolumns - 1, 0, -1)]
+            0, game_board.getrows() - 4), ttycolumns - 1, 0, -1)]
 
     if(has_boss_arrived and num_frames % 25 == 0):
         for boss in boss_list:
             ice_balls_list.append(
-                Iceball(player.x, game_board.cols - boss.width, 0, -1))
+                Iceball(player.getx(), game_board.getcols() - boss.width, 0, -1))
 
     if kb.kbhit():
         char = kb.getch()
         if(char == 'w'):
-            player.vx -= 2
+            player.move_up()
         elif(char == 'a'):
-            player.vy -= 1
+            player.move_left()
         elif(char == 'd'):
-            player.vy += 1
+            player.move_right()
         elif(char == 'b'):
-            bullets_list.append(Bullet(player.x, player.y + 3, 0, 2))
+            bullets_list.append(Bullet(player.getx(), player.gety() + 3, 0, 2))
         elif(ord(char) == 32):
             if(not player.shield_active and is_shield_available):
                 player.shield_active = True
@@ -142,7 +142,7 @@ while True:
             game_board.compute_physics(iceball)
 
     for boss in boss_list:
-        boss.adjustposition(player.x, game_board.rows)
+        boss.adjustposition(player.getx(), game_board.getrows())
 
     game_board.compute_coin_collisions(player, coins_list)
 
@@ -153,13 +153,13 @@ while True:
                 # increase speed of already spawned objects
                 for coin in coins_list:
                     if coin.is_active:
-                        coin.vy = -2
+                        coin.setvy(-2)
                 for laser in lasers_list:
                     if laser.is_active:
-                        laser.vy = -2
+                        laser.setvy(-2)
                 for magnet in magnets_list:
                     if magnet.is_active:
-                        magnet.vy = -2
+                        magnet.setvy(-2)
                 speed_boost.is_active = False
 
     for bullet in bullets_list:

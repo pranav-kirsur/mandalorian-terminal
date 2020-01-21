@@ -29,21 +29,31 @@ class Mandalorian(GameObject):
         self.shield_active = False
 
     def hit_ground(self, rows):
-        self.x = rows - self.height
-        self.vx = min(0, self.vx)
-        self.ax = min(0, self.ax)
+        self._x = rows - self.height
+        self._vx = min(0, self._vx)
+        self._ax = min(0, self._ax)
 
     def hit_left_edge(self):
-        self.y = 0
-        self.vy = max(0, self.vy)
-        self.ay = max(0, self.ay)
+        self._y = 0
+        self._vy = max(0, self._vy)
+        self._ay = max(0, self._ay)
 
     def hit_top(self):
-        self.x = 0
-        self.vx = max(self.vx, 0)
-        self.ax = max(self.ax, 0)
+        self._x = 0
+        self._vx = max(self._vx, 0)
+        self._ax = max(self._ax, 0)
 
     def hit_right_edge(self, cols):
-        self.y = cols - self.width
-        self.vy = min(0, self.vy)
-        self.ay = min(0, self.ay)
+        self._y = cols - self.width
+        self._vy = min(0, self._vy)
+        self._ay = min(0, self._ay)
+    
+    def move_up(self):
+        self._vx -= 2
+
+    def move_left(self):
+        self._vy -= 1
+
+    def move_right(self):
+        self._vy += 1
+
