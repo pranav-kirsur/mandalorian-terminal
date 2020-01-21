@@ -28,8 +28,8 @@ class Boss(GameObject):
 
         self.shape = self.__getshape()
         (self.__height, self.__width) = self.shape.shape
-        self.gravity = 0
-        self.drag = 0
+        self._gravity = 0
+        self._drag = 0
         self.lives = 10
     
     def getheight(self):

@@ -30,8 +30,8 @@ class Laser(GameObject):
             self.__height = 5
             self.__width = 5
 
-        self.gravity = 0
-        self.drag = 0
+        self._gravity = 0
+        self._drag = 0
 
     def getheight(self):
         return self.__height

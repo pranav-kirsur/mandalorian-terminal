@@ -10,8 +10,8 @@ class Magnet(GameObject):
         self.__height = 1
         self.__width = 1
         self.shape = np.array([[Back.BLACK + 'M']])
-        self.gravity = 0
-        self.drag = 0
+        self._gravity = 0
+        self._drag = 0
 
     def getheight(self):
         return self.__height

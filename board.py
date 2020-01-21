@@ -62,10 +62,10 @@ class Board:
 
     def compute_physics(self, game_object):
 
-        game_object.setvx(game_object.getvx() + game_object.getax() + game_object.gravity - \
-            (game_object.drag * game_object.getvx() * game_object.getvx() * (1 if game_object.getvx() > 0 else -1)))
+        game_object.setvx(game_object.getvx() + game_object.getax() + game_object.getgravity() - \
+            (game_object.getdrag() * game_object.getvx() * game_object.getvx() * (1 if game_object.getvx() > 0 else -1)))
         game_object.setvy(game_object.getvy() + game_object.getay() - \
-            (game_object.drag * game_object.getvy() * game_object.getvy() * (1 if game_object.getvy() > 0 else -1)))
+            (game_object.getdrag() * game_object.getvy() * game_object.getvy() * (1 if game_object.getvy() > 0 else -1)))
         game_object.setx(game_object.getx() + game_object.getvx())
         game_object.sety(game_object.gety() + game_object.getvy())
 

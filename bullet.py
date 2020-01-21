@@ -11,8 +11,8 @@ class Bullet(GameObject):
         self.__height = 1
         self.__width = 4
         self.is_active = True
-        self.gravity = 0
-        self.drag = 0
+        self._gravity = 0
+        self._drag = 0
 
     def getheight(self):
         return self.__height

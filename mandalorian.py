@@ -22,8 +22,8 @@ class Mandalorian(GameObject):
         self.shape = self.shape1
         self.__height = 3
         self.__width = 3
-        self.gravity = 0.115
-        self.drag = 0.05
+        self._gravity = 0.115
+        self._drag = 0.05
         self.coins_collected = 0
         self.lives = 3
         self.shield_active = False

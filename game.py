@@ -246,4 +246,4 @@ while True:
     lasers_list = new_lasers_list
     ice_balls_list = new_iceballs_list
 
-    print(player.lives, player.shield_active, end="")
+    print(player.lives, player.getdrag(), end="")

@@ -7,6 +7,14 @@ class GameObject:
         self._vy = vy
         self._ax = 0
         self._ay = 0
+        self._gravity = 0
+        self._drag  = 0
+
+    def getgravity(self):
+        return self._gravity
+    
+    def getdrag(self):
+        return self._drag
 
     def getx(self):
         return self._x
