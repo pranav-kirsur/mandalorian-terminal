@@ -147,6 +147,16 @@ while True:
         if speed_boost.is_active:
             if (game_board.compute_speed_boost_collision(player, speed_boost)):
                 speed_multiplier = 2
+                # increase speed of already spawned objects
+                for coin in coins_list:
+                    if coin.is_active:
+                        coin.vy = -2
+                for laser in lasers_list:
+                    if laser.is_active:
+                        laser.vy = -2
+                for magnet in magnets_list:
+                    if magnet.is_active:
+                        magnet.vy = -2
                 speed_boost.is_active = False
 
     for bullet in bullets_list:
