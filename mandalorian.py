@@ -20,16 +20,22 @@ class Mandalorian(GameObject):
                 [Back.BLACK + '-', Back.BLACK + '-', Back.BLACK + '-']
             ])
         self.shape = self.shape1
-        self.height = 3
-        self.width = 3
+        self.__height = 3
+        self.__width = 3
         self.gravity = 0.115
         self.drag = 0.05
         self.coins_collected = 0
         self.lives = 3
         self.shield_active = False
 
+    def getheight(self):
+        return self.__height
+    
+    def getwidth(self):
+        return self.__width
+
     def hit_ground(self, rows):
-        self._x = rows - self.height
+        self._x = rows - self.__height
         self._vx = min(0, self._vx)
         self._ax = min(0, self._ax)
 
@@ -44,7 +50,7 @@ class Mandalorian(GameObject):
         self._ax = max(self._ax, 0)
 
     def hit_right_edge(self, cols):
-        self._y = cols - self.width
+        self._y = cols - self.__width
         self._vy = min(0, self._vy)
         self._ay = min(0, self._ay)
     

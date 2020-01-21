@@ -7,11 +7,18 @@ class Coin(GameObject):
     def __init__(self, x, y, vx, vy):
         GameObject.__init__(self, x, y, vx, vy)
         self.is_active = True
-        self.height = 1
-        self.width = 1
+        self.__height = 1
+        self.__width = 1
         self.shape = np.array([[Back.YELLOW + '$']])
         self.gravity = 0
         self.drag = 0
+    
+
+    def getheight(self):
+        return self.__height
+    
+    def getwidth(self):
+        return self.__width
 
     def hit_left_edge(self):
         self.is_active = 0

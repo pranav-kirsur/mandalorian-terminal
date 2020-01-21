@@ -8,7 +8,7 @@ class Boss(GameObject):
     def __init__(self, x, y, vx, vy):
         GameObject.__init__(self, x, y, vx, vy)
         self.__color = Back.BLUE
-        self.shape_string = r"""                     ^    ^
+        self.__shape_string = r"""                     ^    ^
                    / \  //\
      |\___/|      /   \//  .\
      /O  O  \__  /    //  | \ \
@@ -27,10 +27,16 @@ class Boss(GameObject):
 """
 
         self.shape = self.__getshape()
-        (self.height, self.width) = self.shape.shape
+        (self.__height, self.__width) = self.shape.shape
         self.gravity = 0
         self.drag = 0
         self.lives = 10
+    
+    def getheight(self):
+        return self.__height
+    
+    def getwidth(self):
+        return self.__width
 
     def hit_ground(self, rows):
         return
@@ -46,7 +52,7 @@ class Boss(GameObject):
 
     def __getshape(self):
         arr = [[self.__color + char for char in line]
-               for line in self.shape_string.split("\n")]
+               for line in self.__shape_string.split("\n")]
         # pad with spaces
         maxlen = len(max(arr, key=len))
         for i in range(len(arr)):
@@ -58,6 +64,6 @@ class Boss(GameObject):
 
     def adjustposition(self, x, rows):
         self.setx(x)
-        if x + self.height >= rows:
-            self.setx(rows - self.height - 1)
+        if x + self.__height >= rows:
+            self.setx(rows - self.__height - 1)
         return

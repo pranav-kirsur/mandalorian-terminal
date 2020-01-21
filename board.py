@@ -42,14 +42,14 @@ class Board:
         ''' Renders the object onto the grid'''
         x = round(game_object.getx())
         y = round(game_object.gety())
-        self.__grid[x: x + game_object.height,
-                    y:y + game_object.width] = game_object.shape
+        self.__grid[x: x + game_object.getheight(),
+                    y:y + game_object.getwidth()] = game_object.shape
 
     def __reposition_cursor(self, x, y):
         print("\033[%d;%dH" % (x, y), end='')
 
     def is_touching_ground(self, game_object):
-        return round(game_object.getx()) + game_object.height >= self.__rows
+        return round(game_object.getx()) + game_object.getheight() >= self.__rows
 
     def is_touching_left_edge(self, game_object):
         return round(game_object.gety()) <= 0
@@ -58,7 +58,7 @@ class Board:
         return round(game_object.getx()) <= 0
 
     def is_touching_right_edge(self, game_object):
-        return round(game_object.gety()) + game_object.width >= self.__cols
+        return round(game_object.gety()) + game_object.getwidth() >= self.__cols
 
     def compute_physics(self, game_object):
 
@@ -84,7 +84,7 @@ class Board:
     def compute_coin_collisions(self, mandalorian, coins_list):
         for coin in coins_list:
             if coin.is_active:
-                if (coin.getx() >= mandalorian.getx()) and (coin.gety() >= mandalorian.gety()) and (coin.getx() < mandalorian.getx() + mandalorian.height) and (coin.gety() < mandalorian.gety() + mandalorian.width):
+                if (coin.getx() >= mandalorian.getx()) and (coin.gety() >= mandalorian.gety()) and (coin.getx() < mandalorian.getx() + mandalorian.getheight()) and (coin.gety() < mandalorian.gety() + mandalorian.getwidth()):
                     # collision has occurred
                     coin.collect()
                     mandalorian.coins_collected += 1
@@ -107,7 +107,7 @@ class Board:
         has_collision_occured = False
 
         for sqaure in laser_squares:
-            if (sqaure[0] >= mandalorian.getx()) and (sqaure[1] >= mandalorian.gety()) and (sqaure[0] < mandalorian.getx() + mandalorian.height) and (sqaure[1] < mandalorian.gety() + mandalorian.width):
+            if (sqaure[0] >= mandalorian.getx()) and (sqaure[1] >= mandalorian.gety()) and (sqaure[0] < mandalorian.getx() + mandalorian.getheight()) and (sqaure[1] < mandalorian.gety() + mandalorian.getwidth()):
                 has_collision_occured = True
 
         if has_collision_occured:
@@ -116,15 +116,15 @@ class Board:
             laser.is_active = False
 
     def compute_projectile_collision(self, bullet, object):
-        bullet_squares = [(bullet.getx(), bullet.gety() + i) for i in range(bullet.width)]
+        bullet_squares = [(bullet.getx(), bullet.gety() + i) for i in range(bullet.getwidth())]
 
         has_collision_occured = False
 
         for sqaure in bullet_squares:
-            if (sqaure[0] >= object.getx()) and (sqaure[1] >= object.gety()) and (sqaure[0] < object.getx() + object.height) and (sqaure[1] < object.gety() + object.width):
+            if (sqaure[0] >= object.getx()) and (sqaure[1] >= object.gety()) and (sqaure[0] < object.getx() + object.getheight()) and (sqaure[1] < object.gety() + object.getwidth()):
                 has_collision_occured = True
 
         return has_collision_occured
 
     def compute_speed_boost_collision(self, mandalorian, speed_boost):
-        return (speed_boost.getx() >= mandalorian.getx()) and (speed_boost.gety() >= mandalorian.gety()) and (speed_boost.getx() < mandalorian.getx() + mandalorian.height) and (speed_boost.gety() < mandalorian.gety() + mandalorian.width)
+        return (speed_boost.getx() >= mandalorian.getx()) and (speed_boost.gety() >= mandalorian.gety()) and (speed_boost.getx() < mandalorian.getx() + mandalorian.getheight()) and (speed_boost.gety() < mandalorian.gety() + mandalorian.getwidth())

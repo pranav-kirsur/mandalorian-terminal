@@ -64,8 +64,8 @@ while True:
         # boss arrives
         has_boss_arrived = True
         temp_boss = Boss(0, 0, 0, 0)
-        boss_list = [Boss(game_board.getrows() - temp_boss.height,
-                          game_board.getcols() - temp_boss.width, 0, 0)]
+        boss_list = [Boss(game_board.getrows() - temp_boss.getheight(),
+                          game_board.getcols() - temp_boss.getwidth(), 0, 0)]
 
     if(num_frames % 50 == 0 and not has_boss_arrived):
         # spawn some coins
@@ -89,7 +89,7 @@ while True:
     if(has_boss_arrived and num_frames % 25 == 0):
         for boss in boss_list:
             ice_balls_list.append(
-                Iceball(player.getx(), game_board.getcols() - boss.width, 0, -1))
+                Iceball(player.getx(), game_board.getcols() - boss.getwidth(), 0, -1))
 
     if kb.kbhit():
         char = kb.getch()

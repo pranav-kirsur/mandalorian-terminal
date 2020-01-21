@@ -11,31 +11,37 @@ class Laser(GameObject):
 
         if(type_of_laser == 1):
             self.shape = np.full((1, 5), Back.RED + " ")
-            self.height = 1
-            self.width = 5
+            self.__height = 1
+            self.__width = 5
         elif(type_of_laser == 2):
             self.shape = np.full((5, 1), Back.RED + " ")
-            self.height = 5
-            self.width = 1
+            self.__height = 5
+            self.__width = 1
         elif(type_of_laser == 3):
             self.shape = np.full((5, 5), Back.BLUE + " ")
             for i in range(5):
                 self.shape[i][i] = Back.RED + " "
-            self.height = 5
-            self.width = 5
+            self.__height = 5
+            self.__width = 5
         elif(type_of_laser == 4):
             self.shape = np.full((5, 5), Back.BLUE + " ")
             for i in range(5):
                 self.shape[i][4 - i] = Back.RED + " "
-            self.height = 5
-            self.width = 5
+            self.__height = 5
+            self.__width = 5
 
         self.gravity = 0
         self.drag = 0
 
+    def getheight(self):
+        return self.__height
+
+    def getwidth(self):
+        return self.__width
+
     def hit_left_edge(self):
         self.is_active = 0
-    
+
     def hit_top(self):
         return
 
