@@ -30,11 +30,17 @@ class Boss(GameObject):
         (self.__height, self.__width) = self.shape.shape
         self._gravity = 0
         self._drag = 0
-        self.lives = 10
-    
+        self.__lives = 10
+
+    def getlives(self):
+        return self.__lives
+
+    def loselife(self):
+        self.__lives -= 1
+
     def getheight(self):
         return self.__height
-    
+
     def getwidth(self):
         return self.__width
 

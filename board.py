@@ -112,7 +112,7 @@ class Board:
 
         if has_collision_occured:
             if not mandalorian.shield_active:
-                mandalorian.lives -= 1
+                mandalorian.loselife()
             laser.is_active = False
 
     def compute_projectile_collision(self, bullet, object):

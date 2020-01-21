@@ -25,12 +25,18 @@ class Mandalorian(GameObject):
         self._gravity = 0.115
         self._drag = 0.05
         self.coins_collected = 0
-        self.lives = 3
+        self.__lives = 3
         self.shield_active = False
+
+    def getlives(self):
+        return self.__lives
+
+    def loselife(self):
+        self.__lives -= 1
 
     def getheight(self):
         return self.__height
-    
+
     def getwidth(self):
         return self.__width
 
@@ -53,7 +59,7 @@ class Mandalorian(GameObject):
         self._y = cols - self.__width
         self._vy = min(0, self._vy)
         self._ay = min(0, self._ay)
-    
+
     def move_up(self):
         self._vx -= 2
 
@@ -62,4 +68,3 @@ class Mandalorian(GameObject):
 
     def move_right(self):
         self._vy += 1
-

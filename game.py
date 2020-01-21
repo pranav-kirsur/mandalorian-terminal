@@ -174,7 +174,7 @@ while True:
         if bullet.is_active:
             for boss in boss_list:
                 if(game_board.compute_projectile_collision(bullet, boss)):
-                    boss.lives -= 1
+                    boss.loselife()
                     bullet.is_active = False
 
     for laser in lasers_list:
@@ -185,7 +185,7 @@ while True:
         if iceball.is_active:
             if(game_board.compute_projectile_collision(iceball, player)):
                 if(not player.shield_active):
-                    player.lives -= 1
+                    player.loselife()
                     iceball.is_active = False
 
     for laser in lasers_list:
@@ -246,4 +246,4 @@ while True:
     lasers_list = new_lasers_list
     ice_balls_list = new_iceballs_list
 
-    print(player.lives, player.getdrag(), end="")
+    print(player.getlives(), player.getdrag(), end="")
