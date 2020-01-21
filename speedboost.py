@@ -6,12 +6,15 @@ import numpy as np
 class Speedboost(GameObject):
     def __init__(self, x, y, vx, vy):
         GameObject.__init__(self, x, y, vx, vy)
-        self.is_active = True
+        self._active = True
         self.__height = 1
         self.__width = 1
         self._shape = np.array([[Back.GREEN + 'S']])
         self._gravity = 0
         self._drag = 0
+
+    def is_active(self):
+        return self._active
 
     def getheight(self):
         return self.__height
@@ -20,10 +23,10 @@ class Speedboost(GameObject):
         return self.__width
 
     def hit_left_edge(self):
-        self.is_active = 0
+        self._active = False
 
     def collect(self):
-        self.is_active = False
+        self._active = False
 
     def hit_top(self):
         return

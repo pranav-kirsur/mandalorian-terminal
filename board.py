@@ -13,7 +13,7 @@ class Board:
 
     def __create_grid(self, rows, cols):
         return np.full((rows, cols), Back.BLUE + " ")
-    
+
     def getrows(self):
         return self.__rows
 
@@ -62,10 +62,10 @@ class Board:
 
     def compute_physics(self, game_object):
 
-        game_object.setvx(game_object.getvx() + game_object.getax() + game_object.getgravity() - \
-            (game_object.getdrag() * game_object.getvx() * game_object.getvx() * (1 if game_object.getvx() > 0 else -1)))
-        game_object.setvy(game_object.getvy() + game_object.getay() - \
-            (game_object.getdrag() * game_object.getvy() * game_object.getvy() * (1 if game_object.getvy() > 0 else -1)))
+        game_object.setvx(game_object.getvx() + game_object.getax() + game_object.getgravity() -
+                          (game_object.getdrag() * game_object.getvx() * game_object.getvx() * (1 if game_object.getvx() > 0 else -1)))
+        game_object.setvy(game_object.getvy() + game_object.getay() -
+                          (game_object.getdrag() * game_object.getvy() * game_object.getvy() * (1 if game_object.getvy() > 0 else -1)))
         game_object.setx(game_object.getx() + game_object.getvx())
         game_object.sety(game_object.gety() + game_object.getvy())
 
@@ -83,7 +83,7 @@ class Board:
 
     def compute_coin_collisions(self, mandalorian, coins_list):
         for coin in coins_list:
-            if coin.is_active:
+            if coin.is_active():
                 if (coin.getx() >= mandalorian.getx()) and (coin.gety() >= mandalorian.gety()) and (coin.getx() < mandalorian.getx() + mandalorian.getheight()) and (coin.gety() < mandalorian.gety() + mandalorian.getwidth()):
                     # collision has occurred
                     coin.collect()
@@ -91,16 +91,16 @@ class Board:
 
     def compute_laser_collision(self, mandalorian, laser):
         laser_squares = []
-        if(laser.type == 1):
+        if(laser.gettype() == 1):
             for i in range(5):
                 laser_squares.append((laser.getx(), laser.gety() + i))
-        elif(laser.type == 2):
+        elif(laser.gettype() == 2):
             for i in range(5):
                 laser_squares.append((laser.getx() + i, laser.gety()))
-        elif(laser.type == 3):
+        elif(laser.gettype() == 3):
             for i in range(5):
                 laser_squares.append((laser.getx() + i, laser.gety() + i))
-        elif(laser.type == 4):
+        elif(laser.gettype() == 4):
             for i in range(5):
                 laser_squares.append((laser.getx() + 4 - i, laser.gety() + i))
 
@@ -113,10 +113,11 @@ class Board:
         if has_collision_occured:
             if not mandalorian.shield_active:
                 mandalorian.loselife()
-            laser.is_active = False
+            laser.set_activity(False)
 
     def compute_projectile_collision(self, bullet, object):
-        bullet_squares = [(bullet.getx(), bullet.gety() + i) for i in range(bullet.getwidth())]
+        bullet_squares = [(bullet.getx(), bullet.gety() + i)
+                          for i in range(bullet.getwidth())]
 
         has_collision_occured = False
 

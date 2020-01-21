@@ -6,8 +6,8 @@ import numpy as np
 class Laser(GameObject):
     def __init__(self, x, y, vx, vy, type_of_laser):
         GameObject.__init__(self, x, y, vx, vy)
-        self.is_active = True
-        self.type = type_of_laser
+        self._active = True
+        self.__type = type_of_laser
 
         if(type_of_laser == 1):
             self._shape = np.full((1, 5), Back.RED + " ")
@@ -33,6 +33,12 @@ class Laser(GameObject):
         self._gravity = 0
         self._drag = 0
 
+    def is_active(self):
+        return self._active
+
+    def gettype(self):
+        return self.__type
+
     def getheight(self):
         return self.__height
 
@@ -40,7 +46,7 @@ class Laser(GameObject):
         return self.__width
 
     def hit_left_edge(self):
-        self.is_active = 0
+        self._active = False
 
     def hit_top(self):
         return

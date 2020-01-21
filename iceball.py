@@ -10,9 +10,12 @@ class Iceball(GameObject):
         self._shape = np.full((1, 4), Back.CYAN + " ")
         self.__height = 1
         self.__width = 4
-        self.is_active = True
+        self._active = True
         self._gravity = 0
         self._drag = 0
+
+    def is_active(self):
+        return self._active
 
     def getheight(self):
         return self.__height
@@ -21,10 +24,10 @@ class Iceball(GameObject):
         return self.__width
 
     def hit_left_edge(self):
-        self.is_active = False
+        self._active = False
     
     def hit_right_edge(self, cols):
-        self.is_active = False
+        self._active = False
 
     def hit_top(self):
         return

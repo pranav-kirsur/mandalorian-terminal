@@ -112,33 +112,33 @@ while True:
 
     # magnet attracts player
     for magnet in magnets_list:
-        if magnet.is_active:
+        if magnet.is_active():
             magnet.attract(player)
 
     game_board.compute_physics(player)
 
     for coin in coins_list:
-        if(coin.is_active):
+        if(coin.is_active()):
             game_board.compute_physics(coin)
 
     for laser in lasers_list:
-        if(laser.is_active):
+        if(laser.is_active()):
             game_board.compute_physics(laser)
 
     for bullet in bullets_list:
-        if(bullet.is_active):
+        if(bullet.is_active()):
             game_board.compute_physics(bullet)
 
     for speed_boost in speed_boost_list:
-        if speed_boost.is_active:
+        if speed_boost.is_active():
             game_board.compute_physics(speed_boost)
 
     for magnet in magnets_list:
-        if magnet.is_active:
+        if magnet.is_active():
             game_board.compute_physics(magnet)
 
     for iceball in ice_balls_list:
-        if iceball.is_active:
+        if iceball.is_active():
             game_board.compute_physics(iceball)
 
     for boss in boss_list:
@@ -147,72 +147,72 @@ while True:
     game_board.compute_coin_collisions(player, coins_list)
 
     for speed_boost in speed_boost_list:
-        if speed_boost.is_active:
+        if (speed_boost.is_active()):
             if (game_board.compute_speed_boost_collision(player, speed_boost)):
                 speed_multiplier = 2
                 # increase speed of already spawned objects
                 for coin in coins_list:
-                    if coin.is_active:
+                    if coin.is_active():
                         coin.setvy(-2)
                 for laser in lasers_list:
-                    if laser.is_active:
+                    if laser.is_active():
                         laser.setvy(-2)
                 for magnet in magnets_list:
-                    if magnet.is_active:
+                    if magnet.is_active():
                         magnet.setvy(-2)
-                speed_boost.is_active = False
+                speed_boost.set_activity(False)
 
     for bullet in bullets_list:
-        if bullet.is_active:
+        if bullet.is_active():
             for laser in lasers_list:
-                if laser.is_active:
+                if laser.is_active():
                     if(game_board.compute_projectile_collision(bullet, laser)):
-                        laser.is_active = False
-                        bullet.is_active = False
+                        laser.set_activity(False)
+                        bullet.set_activity(False)
 
     for bullet in bullets_list:
-        if bullet.is_active:
+        if bullet.is_active():
             for boss in boss_list:
                 if(game_board.compute_projectile_collision(bullet, boss)):
                     boss.loselife()
-                    bullet.is_active = False
+                    bullet.set_activity(False)
 
     for laser in lasers_list:
-        if(laser.is_active):
+        if(laser.is_active()):
             game_board.compute_laser_collision(player, laser)
 
     for iceball in ice_balls_list:
-        if iceball.is_active:
+        if iceball.is_active():
             if(game_board.compute_projectile_collision(iceball, player)):
                 if(not player.shield_active):
                     player.loselife()
-                    iceball.is_active = False
+                    iceball.set_activity(False)
 
     for laser in lasers_list:
-        if(laser.is_active):
+        if(laser.is_active()):
             game_board.render_object(laser)
 
     for coin in coins_list:
-        if(coin.is_active):
+        if(coin.is_active()):
             game_board.render_object(coin)
 
     for speed_boost in speed_boost_list:
-        if speed_boost.is_active:
+        if speed_boost.is_active():
             game_board.render_object(speed_boost)
 
     for magnet in magnets_list:
-        if magnet.is_active:
+        if magnet.is_active():
             game_board.render_object(magnet)
 
     for boss in boss_list:
         game_board.render_object(boss)
 
     for iceball in ice_balls_list:
-        if(iceball.is_active):
+        if(iceball.is_active()):
             game_board.render_object(iceball)
 
     for bullet in bullets_list:
-        if(bullet.is_active):
+        if(bullet.is_active()):
             game_board.render_object(bullet)
 
     game_board.render_object(player)
@@ -226,19 +226,19 @@ while True:
     new_iceballs_list = []
 
     for laser in lasers_list:
-        if(laser.is_active):
+        if(laser.is_active()):
             new_lasers_list.append(laser)
 
     for coin in coins_list:
-        if(coin.is_active):
+        if(coin.is_active()):
             new_coins_list.append(coin)
 
     for bullet in bullets_list:
-        if(bullet.is_active):
+        if(bullet.is_active()):
             new_bullets_list.append(bullet)
 
     for iceball in ice_balls_list:
-        if(iceball.is_active):
+        if(iceball.is_active()):
             new_iceballs_list.append(iceball)
 
     coins_list = new_coins_list

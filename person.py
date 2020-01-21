@@ -10,6 +10,10 @@ class GameObject:
         self._gravity = 0
         self._drag  = 0
         self._shape = []
+        self._active = True
+        
+    def set_activity(self, state):
+        self._active = state
     
     def getshape(self):
         return self._shape
