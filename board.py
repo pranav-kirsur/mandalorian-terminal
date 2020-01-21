@@ -26,7 +26,7 @@ class Board:
 
     def render(self):
         ''' Renders the top, grid, and ground and prints it onto the screen'''
-        self.reposition_cursor(0, 0)
+        self.__reposition_cursor(0, 0)
         print(Back.YELLOW + (" " * self.cols))
         self.print_grid()
         print(Back.GREEN + (" " * self.cols))
@@ -39,7 +39,7 @@ class Board:
         self.__grid[x: x + game_object.height,
                     y:y + game_object.width] = game_object.shape
 
-    def reposition_cursor(self, x, y):
+    def __reposition_cursor(self, x, y):
         print("\033[%d;%dH" % (x, y), end='')
 
     def is_touching_ground(self, game_object):

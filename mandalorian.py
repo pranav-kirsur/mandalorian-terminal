@@ -7,12 +7,19 @@ class Mandalorian(GameObject):
 
     def __init__(self, x, y, vx, vy):
         GameObject.__init__(self, x, y, vx, vy)
-        self.shape = np.array(
+        self.shape1 = np.array(
             [
                 [Back.WHITE + '/', Back.WHITE + 'O', Back.WHITE + '\\'],
                 [Back.WHITE + '-', Back.WHITE + '-', Back.WHITE + '-'],
                 [Back.WHITE + '-', Back.WHITE + '-', Back.WHITE + '-']
             ])
+        self.shape2 = np.array(
+            [
+                [Back.BLACK + '/', Back.BLACK + 'O', Back.BLACK + '\\'],
+                [Back.BLACK + '-', Back.BLACK + '-', Back.BLACK + '-'],
+                [Back.BLACK + '-', Back.BLACK + '-', Back.BLACK + '-']
+            ])
+        self.shape = self.shape1
         self.height = 3
         self.width = 3
         self.gravity = 0.115

@@ -53,6 +53,7 @@ while True:
 
     if(time.time() - last_shield_activation_time > 10):
         player.shield_active = False
+        player.shape = player.shape1
 
     if(time.time() - last_shield_activation_time >= 70):
         is_shield_available = True
@@ -84,10 +85,11 @@ while True:
         # spawn random magnet
         magnets_list = [Magnet(random.randint(
             0, game_board.rows - 4), ttycolumns - 1, 0, -1)]
-    
+
     if(has_boss_arrived and num_frames % 25 == 0):
         for boss in boss_list:
-            ice_balls_list.append(Iceball(player.x, game_board.cols - boss.width, 0, -1 ))
+            ice_balls_list.append(
+                Iceball(player.x, game_board.cols - boss.width, 0, -1))
 
     if kb.kbhit():
         char = kb.getch()
@@ -102,6 +104,7 @@ while True:
         elif(ord(char) == 32):
             if(not player.shield_active and is_shield_available):
                 player.shield_active = True
+                player.shape = player.shape2
                 last_shield_activation_time = time.time()
                 is_shield_available = False
 
@@ -133,7 +136,7 @@ while True:
     for magnet in magnets_list:
         if magnet.is_active:
             game_board.compute_physics(magnet)
-    
+
     for iceball in ice_balls_list:
         if iceball.is_active:
             game_board.compute_physics(iceball)
@@ -166,19 +169,18 @@ while True:
                     if(game_board.compute_projectile_collision(bullet, laser)):
                         laser.is_active = False
                         bullet.is_active = False
-    
+
     for bullet in bullets_list:
         if bullet.is_active:
             for boss in boss_list:
-                    if(game_board.compute_projectile_collision(bullet, boss)):
-                        boss.lives -= 1
-                        bullet.is_active = False
-    
+                if(game_board.compute_projectile_collision(bullet, boss)):
+                    boss.lives -= 1
+                    bullet.is_active = False
 
     for laser in lasers_list:
         if(laser.is_active):
             game_board.compute_laser_collision(player, laser)
-    
+
     for iceball in ice_balls_list:
         if iceball.is_active:
             if(game_board.compute_projectile_collision(iceball, player)):
@@ -212,12 +214,10 @@ while True:
     for bullet in bullets_list:
         if(bullet.is_active):
             game_board.render_object(bullet)
-    
 
     game_board.render_object(player)
 
     game_board.render()
-
 
     # clear dead objects
     new_lasers_list = []
@@ -236,7 +236,7 @@ while True:
     for bullet in bullets_list:
         if(bullet.is_active):
             new_bullets_list.append(bullet)
-    
+
     for iceball in ice_balls_list:
         if(iceball.is_active):
             new_iceballs_list.append(iceball)
