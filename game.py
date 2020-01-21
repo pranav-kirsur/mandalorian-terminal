@@ -53,7 +53,7 @@ while True:
 
     if(time.time() - last_shield_activation_time > 10):
         player.shield_active = False
-        player.shape = player.shape1
+        player.setshape(1)
 
     if(time.time() - last_shield_activation_time >= 70):
         is_shield_available = True
@@ -104,7 +104,7 @@ while True:
         elif(ord(char) == 32):
             if(not player.shield_active and is_shield_available):
                 player.shield_active = True
-                player.shape = player.shape2
+                player.setshape(2)
                 last_shield_activation_time = time.time()
                 is_shield_available = False
 

@@ -7,19 +7,19 @@ class Mandalorian(GameObject):
 
     def __init__(self, x, y, vx, vy):
         GameObject.__init__(self, x, y, vx, vy)
-        self.shape1 = np.array(
+        self.__shape1 = np.array(
             [
                 [Back.WHITE + '/', Back.WHITE + 'O', Back.WHITE + '\\'],
                 [Back.WHITE + '-', Back.WHITE + '-', Back.WHITE + '-'],
                 [Back.WHITE + '-', Back.WHITE + '-', Back.WHITE + '-']
             ])
-        self.shape2 = np.array(
+        self.__shape2 = np.array(
             [
                 [Back.BLACK + '/', Back.BLACK + 'O', Back.BLACK + '\\'],
                 [Back.BLACK + '-', Back.BLACK + '-', Back.BLACK + '-'],
                 [Back.BLACK + '-', Back.BLACK + '-', Back.BLACK + '-']
             ])
-        self.shape = self.shape1
+        self._shape = self.__shape1
         self.__height = 3
         self.__width = 3
         self._gravity = 0.115
@@ -27,6 +27,12 @@ class Mandalorian(GameObject):
         self.coins_collected = 0
         self.__lives = 3
         self.shield_active = False
+    
+    def setshape(self, shape_num):
+        if shape_num == 1:
+            self._shape = self.__shape1
+        if shape_num == 2:
+            self._shape = self.__shape2
 
     def getlives(self):
         return self.__lives

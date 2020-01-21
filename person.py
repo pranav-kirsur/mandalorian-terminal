@@ -9,6 +9,10 @@ class GameObject:
         self._ay = 0
         self._gravity = 0
         self._drag  = 0
+        self._shape = []
+    
+    def getshape(self):
+        return self._shape
 
     def getgravity(self):
         return self._gravity

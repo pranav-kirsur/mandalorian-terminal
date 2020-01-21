@@ -7,7 +7,7 @@ class Bullet(GameObject):
     def __init__(self, x, y, vx, vy):
         GameObject.__init__(self, x, y, vx, vy)
 
-        self.shape = np.full((1, 4), Back.MAGENTA + " ")
+        self._shape = np.full((1, 4), Back.MAGENTA + " ")
         self.__height = 1
         self.__width = 4
         self.is_active = True

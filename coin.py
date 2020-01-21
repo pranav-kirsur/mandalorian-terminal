@@ -9,7 +9,7 @@ class Coin(GameObject):
         self.is_active = True
         self.__height = 1
         self.__width = 1
-        self.shape = np.array([[Back.YELLOW + '$']])
+        self._shape = np.array([[Back.YELLOW + '$']])
         self._gravity = 0
         self._drag = 0
     

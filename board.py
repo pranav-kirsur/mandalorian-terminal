@@ -43,7 +43,7 @@ class Board:
         x = round(game_object.getx())
         y = round(game_object.gety())
         self.__grid[x: x + game_object.getheight(),
-                    y:y + game_object.getwidth()] = game_object.shape
+                    y:y + game_object.getwidth()] = game_object.getshape()
 
     def __reposition_cursor(self, x, y):
         print("\033[%d;%dH" % (x, y), end='')

@@ -26,11 +26,13 @@ class Boss(GameObject):
         ///-._ _ _ _ _ _ _}^ - - - - ~                     ~--,   .-~
 """
 
-        self.shape = self.__getshape()
-        (self.__height, self.__width) = self.shape.shape
+        self._shape = self.__getshape()
+        (self.__height, self.__width) = self._shape.shape
         self._gravity = 0
         self._drag = 0
         self.__lives = 10
+
+
 
     def getlives(self):
         return self.__lives
@@ -65,7 +67,6 @@ class Boss(GameObject):
             if(len(arr[i]) < maxlen):
                 arr[i] += [self.__color + " "] * (maxlen - len(arr[i]))
         arr = np.array(arr)
-        print(arr.shape)
         return np.array(arr)
 
     def adjustposition(self, x, rows):
