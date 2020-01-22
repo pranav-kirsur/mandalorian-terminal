@@ -82,11 +82,11 @@ while True:
         print("Sorry, you died")
         raise SystemExit
 
-    if(time.time() - last_shield_activation_time > 10 and not is_dragon_active):
+    if(time.time() - last_shield_activation_time > 10):
         player.set_shield_state(False)
         player.setshape(1)
 
-    if(time.time() - last_shield_activation_time >= 70 and not is_dragon_active):
+    if(time.time() - last_shield_activation_time >= 70):
         is_shield_available = True
 
     # Spawn objects
