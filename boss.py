@@ -30,7 +30,7 @@ class Boss(GameObject):
         (self.__height, self.__width) = self._shape.shape
         self._gravity = 0
         self._drag = 0
-        self.__lives = 10
+        self.__lives = 20
 
 
 

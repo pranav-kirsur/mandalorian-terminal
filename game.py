@@ -2,7 +2,7 @@ from board import Board
 from mandalorian import Mandalorian
 import os
 from time import sleep
-from colorama import init
+from colorama import init, Fore, Back, Style
 from kbhit import KBHit
 from coin import Coin
 from laser import Laser
@@ -22,10 +22,11 @@ ttyrows, ttycolumns = os.popen('stty size', 'r').read().split()
 ttyrows, ttycolumns = int(ttyrows), int(ttycolumns)
 
 os.system('clear')
-game_board = Board(rows=ttyrows - 3, cols=ttycolumns)
-game_board.render()
+game_board = Board(rows=ttyrows - 4, cols=ttycolumns)
+
 
 player = Mandalorian(3, 3, 0, 0)
+# game_board.render(player.getlives())
 kb = KBHit()
 
 
@@ -46,13 +47,35 @@ speed_multiplier = 1
 
 has_boss_arrived = False
 
+time_for_completion = 100
+
+init_time = time.time()
 
 while True:
     num_frames += 1
     sleep(0.0175)
 
+    if(time.time() - init_time > time_for_completion):
+        os.system('clear')
+        print("Sorry, you ran out of time")
+        raise SystemExit
+
+
+    if(has_boss_arrived):
+        if(boss_list[0].getlives() <= 0):
+            game_board.increase_score(500)
+            os.system('clear')
+            print("The dragon is slain!")
+            print("Your score is " + str(game_board.getscore()))
+            raise SystemExit
+
+    if(player.getlives() <= 0):
+        os.system('clear')
+        print("Sorry, you died")
+        raise SystemExit
+
     if(time.time() - last_shield_activation_time > 10):
-        player.shield_active = False
+        player.set_shield_state(False)
         player.setshape(1)
 
     if(time.time() - last_shield_activation_time >= 70):
@@ -60,7 +83,7 @@ while True:
 
     # Spawn objects
 
-    if(num_frames == 500):
+    if(num_frames == 2500):
         # boss arrives
         has_boss_arrived = True
         temp_boss = Boss(0, 0, 0, 0)
@@ -107,6 +130,11 @@ while True:
                 player.setshape(2)
                 last_shield_activation_time = time.time()
                 is_shield_available = False
+        elif(char == 'q'):
+            print(Style.RESET_ALL, end='')
+            os.system('clear')
+            print(Style.RESET_ALL + "You quit by pressing q!")
+            raise SystemExit
 
     game_board.refresh_grid()
 
@@ -184,7 +212,7 @@ while True:
     for iceball in ice_balls_list:
         if iceball.is_active():
             if(game_board.compute_projectile_collision(iceball, player)):
-                if(not player.shield_active):
+                if(not player.get_shield_state()):
                     player.loselife()
                     iceball.set_activity(False)
 
@@ -217,7 +245,7 @@ while True:
 
     game_board.render_object(player)
 
-    game_board.render()
+    game_board.render(player.getlives(), time_for_completion - (time.time() - init_time))
 
     # clear dead objects
     new_lasers_list = []
@@ -245,5 +273,3 @@ while True:
     bullets_list = new_bullets_list
     lasers_list = new_lasers_list
     ice_balls_list = new_iceballs_list
-
-    print(player.getlives(), player.getdrag(), end="")

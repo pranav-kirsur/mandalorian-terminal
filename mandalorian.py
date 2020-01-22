@@ -24,16 +24,19 @@ class Mandalorian(GameObject):
         self.__width = 3
         self._gravity = 0.115
         self._drag = 0.05
-        self.coins_collected = 0
-        self.__lives = 3
+        self.__coins_collected = 0
+        self.__lives = 5
         self.__shield_active = False
-    
+
+    def collect_coin(self):
+        self.__coins_collected += 1
+
     def get_shield_state(self):
         return self.__shield_active
-    
+
     def set_shield_state(self, state):
         self.__shield_active = state
-    
+
     def setshape(self, shape_num):
         if shape_num == 1:
             self._shape = self.__shape1

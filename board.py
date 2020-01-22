@@ -10,6 +10,7 @@ class Board:
         self.__rows = rows
         self.__cols = cols
         self.__grid = self.__create_grid(rows, cols)
+        self.__score = 0
 
     def __create_grid(self, rows, cols):
         return np.full((rows, cols), Back.BLUE + " ")
@@ -19,6 +20,9 @@ class Board:
 
     def getcols(self):
         return self.__cols
+
+    def getscore(self):
+        return self.__score
 
     def refresh_grid(self):
         self.__grid = self.__create_grid(self.__rows, self.__cols)
@@ -30,13 +34,14 @@ class Board:
         for row in self.__grid:
             print("".join(row))
 
-    def render(self):
-        ''' Renders the top, grid, and ground and prints it onto the screen'''
+    def render(self, lives, time_left):
+        ''' Renders the information panel, top, grid, and ground and prints it onto the screen'''
         self.__reposition_cursor(0, 0)
+        print("Score: " + str(self.__score) + "\tLives: " + str(lives) + "\tTime left: " + str(time_left))
         print(Back.YELLOW + (" " * self.__cols))
         self.print_grid()
-        print(Back.GREEN + (" " * self.__cols))
-        print(Back.RESET, end='')
+        print(Back.GREEN + (" " * self.__cols) + Style.RESET_ALL)
+        print(Style.RESET_ALL, end='')
 
     def render_object(self, game_object):
         ''' Renders the object onto the grid'''
@@ -87,7 +92,8 @@ class Board:
                 if (coin.getx() >= mandalorian.getx()) and (coin.gety() >= mandalorian.gety()) and (coin.getx() < mandalorian.getx() + mandalorian.getheight()) and (coin.gety() < mandalorian.gety() + mandalorian.getwidth()):
                     # collision has occurred
                     coin.collect()
-                    mandalorian.coins_collected += 1
+                    mandalorian.collect_coin()
+                    self.__score += 10
 
     def compute_laser_collision(self, mandalorian, laser):
         laser_squares = []
@@ -111,7 +117,7 @@ class Board:
                 has_collision_occured = True
 
         if has_collision_occured:
-            if not mandalorian.shield_active:
+            if not mandalorian.get_shield_state():
                 mandalorian.loselife()
             laser.set_activity(False)
 
@@ -129,3 +135,6 @@ class Board:
 
     def compute_speed_boost_collision(self, mandalorian, speed_boost):
         return (speed_boost.getx() >= mandalorian.getx()) and (speed_boost.gety() >= mandalorian.gety()) and (speed_boost.getx() < mandalorian.getx() + mandalorian.getheight()) and (speed_boost.gety() < mandalorian.gety() + mandalorian.getwidth())
+
+    def increase_score(self, increment):
+        self.__score += increment
