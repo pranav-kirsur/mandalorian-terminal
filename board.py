@@ -95,7 +95,7 @@ class Board:
                     mandalorian.collect_coin()
                     self.__score += 10
 
-    def compute_laser_collision(self, mandalorian, laser):
+    def compute_laser_collision(self, mandalorian, laser, is_dragon_active):
         laser_squares = []
         if(laser.gettype() == 1):
             for i in range(5):
@@ -117,7 +117,7 @@ class Board:
                 has_collision_occured = True
 
         if has_collision_occured:
-            if not mandalorian.get_shield_state():
+            if not mandalorian.get_shield_state() and not is_dragon_active:
                 mandalorian.loselife()
             laser.set_activity(False)
 

@@ -19,6 +19,16 @@ class Mandalorian(GameObject):
                 [Back.BLACK + '-', Back.BLACK + '-', Back.BLACK + '-'],
                 [Back.BLACK + '-', Back.BLACK + '-', Back.BLACK + '-']
             ])
+        self.__shape3string = r"""
+...             ...             ...      OOOOO
+    ...    ...      ...     ...     .....OOOOO
+        ...             ...              OOOOO
+"""
+        self.__shape4string = r"""
+        ...             ...              OOOOO
+    ...    ...      ...     ...     .....OOOOO
+...             ...             ...      OOOOO
+"""
         self._shape = self.__shape1
         self.__height = 3
         self.__width = 3
@@ -42,6 +52,23 @@ class Mandalorian(GameObject):
             self._shape = self.__shape1
         if shape_num == 2:
             self._shape = self.__shape2
+        if shape_num == 3:
+            self._shape = self.__getshape(self.__shape3string)
+            (self.__height, self.__width) = self._shape.shape
+        if shape_num == 4:
+            self._shape = self.__getshape(self.__shape4string)
+            (self.__height, self.__width) = self._shape.shape
+
+    def __getshape(self, shape_string):
+        arr = [[Back.BLUE + char for char in line]
+               for line in shape_string.split("\n")]
+        # pad with spaces
+        maxlen = len(max(arr, key=len))
+        for i in range(len(arr)):
+            if(len(arr[i]) < maxlen):
+                arr[i] += [Back.BLUE + " "] * (maxlen - len(arr[i]))
+        arr = np.array(arr)
+        return arr
 
     def getlives(self):
         return self.__lives

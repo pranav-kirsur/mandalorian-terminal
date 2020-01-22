@@ -51,9 +51,17 @@ time_for_completion = 100
 
 init_time = time.time()
 
+is_dragon_active = False
+
 while True:
     num_frames += 1
     sleep(0.0175)
+
+    if(is_dragon_active):
+        if(num_frames % 10 < 5):
+            player.setshape(3)
+        else:
+            player.setshape(4)
 
     if(time.time() - init_time > time_for_completion):
         os.system('clear')
@@ -74,11 +82,11 @@ while True:
         print("Sorry, you died")
         raise SystemExit
 
-    if(time.time() - last_shield_activation_time > 10):
+    if(time.time() - last_shield_activation_time > 10 and not is_dragon_active):
         player.set_shield_state(False)
         player.setshape(1)
 
-    if(time.time() - last_shield_activation_time >= 70):
+    if(time.time() - last_shield_activation_time >= 70 and not is_dragon_active):
         is_shield_available = True
 
     # Spawn objects
@@ -123,9 +131,9 @@ while True:
         elif(char == 'd'):
             player.move_right()
         elif(char == 'b'):
-            bullets_list.append(Bullet(player.getx(), player.gety() + 3, 0, 2))
+            bullets_list.append(Bullet(player.getx(), player.gety() + player.getwidth(), 0, 2))
         elif(ord(char) == 32):
-            if(not player.get_shield_state() and is_shield_available):
+            if(not player.get_shield_state() and is_shield_available and not is_dragon_active):
                 player.set_shield_state(True)
                 player.setshape(2)
                 last_shield_activation_time = time.time()
@@ -135,6 +143,8 @@ while True:
             os.system('clear')
             print(Style.RESET_ALL + "You quit by pressing q!")
             raise SystemExit
+        elif(char == 'l'):
+            is_dragon_active = True
 
     game_board.refresh_grid()
 
@@ -207,12 +217,12 @@ while True:
 
     for laser in lasers_list:
         if(laser.is_active()):
-            game_board.compute_laser_collision(player, laser)
+            game_board.compute_laser_collision(player, laser, is_dragon_active)
 
     for iceball in ice_balls_list:
         if iceball.is_active():
             if(game_board.compute_projectile_collision(iceball, player)):
-                if(not player.get_shield_state()):
+                if(not player.get_shield_state() and not is_dragon_active):
                     player.loselife()
                     iceball.set_activity(False)
 
