@@ -91,7 +91,7 @@ while True:
 
     # Spawn objects
 
-    if(num_frames == 2500):
+    if(num_frames == 1500):
         # boss arrives
         has_boss_arrived = True
         temp_boss = Boss(0, 0, 0, 0)
@@ -150,7 +150,7 @@ while True:
 
     # magnet attracts player
     for magnet in magnets_list:
-        if magnet.is_active():
+        if magnet.is_active() and not is_dragon_active:
             magnet.attract(player)
 
     game_board.compute_physics(player)
@@ -217,14 +217,21 @@ while True:
 
     for laser in lasers_list:
         if(laser.is_active()):
-            game_board.compute_laser_collision(player, laser, is_dragon_active)
+            should_destroy_dragon = game_board.compute_laser_collision(player, laser, is_dragon_active)
+            if(is_dragon_active and should_destroy_dragon):
+                is_dragon_active = False
+            
 
     for iceball in ice_balls_list:
         if iceball.is_active():
             if(game_board.compute_projectile_collision(iceball, player)):
-                if(not player.get_shield_state() and not is_dragon_active):
-                    player.loselife()
+                if(not player.get_shield_state()):
+                    if not is_dragon_active:
+                        player.loselife()
+                    else:
+                        is_dragon_active = False
                     iceball.set_activity(False)
+                
 
     for laser in lasers_list:
         if(laser.is_active()):

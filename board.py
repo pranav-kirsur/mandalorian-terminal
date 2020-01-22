@@ -125,10 +125,16 @@ class Board:
             if (sqaure[0] >= mandalorian.getx()) and (sqaure[1] >= mandalorian.gety()) and (sqaure[0] < mandalorian.getx() + mandalorian.getheight()) and (sqaure[1] < mandalorian.gety() + mandalorian.getwidth()):
                 has_collision_occured = True
 
+        should_dragon_be_destroyed = False
         if has_collision_occured:
-            if not mandalorian.get_shield_state() and not is_dragon_active:
-                mandalorian.loselife()
+            if not mandalorian.get_shield_state() :
+                if not is_dragon_active:
+                    mandalorian.loselife()
+                else:
+                    #dragon should be destoyed
+                    should_dragon_be_destroyed = True
             laser.set_activity(False)
+        return should_dragon_be_destroyed
 
     def compute_projectile_collision(self, bullet, object):
         bullet_squares = [(bullet.getx(), bullet.gety() + i)
