@@ -37,7 +37,8 @@ class Board:
     def render(self, lives, time_left):
         ''' Renders the information panel, top, grid, and ground and prints it onto the screen'''
         self.__reposition_cursor(0, 0)
-        print("Score: " + str(self.__score) + "\tLives: " + str(lives) + "\tTime left: " + str(time_left))
+        print("Score: " + str(self.__score) + "\tLives: " +
+              str(lives) + "\tTime left: " + str(time_left))
         print(Back.YELLOW + (" " * self.__cols))
         self.print_grid()
         print(Back.GREEN + (" " * self.__cols) + Style.RESET_ALL)
@@ -64,6 +65,14 @@ class Board:
 
     def is_touching_right_edge(self, game_object):
         return round(game_object.gety()) + game_object.getwidth() >= self.__cols
+
+    def render_wave_from_edge_till_coords(self, x, y, phase, height):
+        x = int(round(x))
+        y = int(round(y))
+        for ycoord in range(y):
+            xcoord = int(round(x + height/2*np.sin((ycoord * 50) + phase)))
+            if xcoord >= 0 and xcoord < self.__rows and ycoord >= 0 and ycoord < self.__cols:
+                self.__grid[xcoord, ycoord] = Back.WHITE + " "
 
     def compute_physics(self, game_object):
 

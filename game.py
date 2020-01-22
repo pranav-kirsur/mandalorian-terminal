@@ -12,6 +12,8 @@ from magnet import Magnet
 from boss import Boss
 from iceball import Iceball
 
+
+import math
 import random
 import time
 
@@ -52,16 +54,14 @@ time_for_completion = 100
 init_time = time.time()
 
 is_dragon_active = False
+phase = 0
 
 while True:
     num_frames += 1
     sleep(0.0175)
 
-    if(is_dragon_active):
-        if(num_frames % 10 < 5):
-            player.setshape(3)
-        else:
-            player.setshape(4)
+    phase-=0.5
+
 
     if(time.time() - init_time > time_for_completion):
         os.system('clear')
@@ -254,6 +254,9 @@ while True:
             game_board.render_object(bullet)
 
     game_board.render_object(player)
+
+    if(is_dragon_active):
+        game_board.render_wave_from_edge_till_coords(player.getx(), player.gety(), phase, player.getheight() * 3)
 
     game_board.render(player.getlives(), time_for_completion - (time.time() - init_time))
 
